@@ -68,13 +68,8 @@ void Player::init2()
 void Player::adjustWindow()
 {
     QDesktopWidget *desktop = QApplication::desktop();
-    //QDesktopWidget *desktop2 = new QDesktopWidget();
-       QRect rec1 = desktop->availableGeometry (0);
-    //qDebug(QString::number(rec1.height()).toLatin1().data());
-    //qDebug(QString::number(rec1.width()).toLatin1().data());
+    QRect rec1 = desktop->availableGeometry (0);
     QRect rec2 = desktop->screenGeometry (0);
-    //qDebug(QString::number(rec2.height()).toLatin1().data());
-    //qDebug(QString::number(rec2.width()).toLatin1().data());
     int screenWidth, width; 
     int screenHeight, height;
     int x, y;
@@ -87,8 +82,7 @@ void Player::adjustWindow()
     x = (screenWidth - width);
     y = (screenHeight - height);
     int diff1 = rec2.height() - rec1.height();
-    int diff2 = rec2.width() - rec1.width();
-    //y -= 50;    
+    int diff2 = rec2.width() - rec1.width();  
     move (x+diff2, y+diff1);
 }
 
