@@ -67,6 +67,12 @@ void Player::init2()
 // adjust window position to right down corner
 void Player::adjustWindow()
 {
+    QRect rec = frameGeometry();
+    qDebug() << "W : " << QString::number(rec.width()); 
+    qDebug() << "H : " << QString::number(rec.height());
+    QRect rec0 = geometry();
+    qDebug() << "W0 : " << QString::number(rec0.width()); 
+    qDebug() << "H0 : " << QString::number(rec0.height());
     QDesktopWidget *desktop = QApplication::desktop();
     QRect rec1 = desktop->availableGeometry (0);
     QRect rec2 = desktop->screenGeometry (0);
@@ -78,7 +84,9 @@ void Player::adjustWindow()
     screenHeight = desktop->height();
     windowSize = size(); 
     width = windowSize.width(); 
-    height = windowSize.height();    
+    height = windowSize.height();   
+    qDebug() << "W2 : " << QString::number(width); 
+    qDebug() << "H2 : " << QString::number(height); 
     x = (screenWidth - width);
     y = (screenHeight - height);
     int diff1 = rec2.height() - rec1.height();
@@ -145,7 +153,8 @@ void Player::setActions(){
     connect(videoPlayer->mediaObject(), SIGNAL(stateChanged(Phonon::State, Phonon::State)), this, SLOT(stateChanged(Phonon::State, Phonon::State)));
     connect(videoPlayer->mediaObject(), SIGNAL(metaDataChanged()), this, SLOT(updateInfo()));
     connect(timeSlider, SIGNAL(sliderReleased()),this, SLOT(seekFile()));
-    connect(volumeSlider, SIGNAL(sliderMoved()),this, SLOT(changeVolume()));
+    connect(volumeSlider, SIGNAL(valueChanged(int)),this, SLOT(changeVolume()));
+    connect(this, SIGNAL(fullScreen()), this, SLOT(setFullScreen()));
 }
 
 // set the player UI : buttons icons and sliders
@@ -327,5 +336,21 @@ QString Player::calculateTime(int time_)
     if (seconds < 10) szero = "0";
     QString times = hzero+QString::number(hours)+":"+ mzero+QString::number(minutes)+":"+szero+QString::number(seconds);
     return times;
+}
+
+void Player::keyPressEvent(QKeyEvent *event)
+{
+    QMainWindow::keyPressEvent(event);        
+    switch (event->key()) {
+        case Qt::Key_F:    // 0 button pressed and so on....        
+            emit(fullScreen());
+            qDebug() << "F";
+            break;
+    }
+}
+
+void Player::setFullScreen()
+{
+    videoPlayer->setFullScreen(true);
 }
 //

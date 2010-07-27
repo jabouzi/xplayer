@@ -12,12 +12,12 @@ class Player : public QMainWindow, public Ui::Player
 {
 Q_OBJECT
 public:
-	Player( QWidget * parent = 0, Qt::WFlags f = 0 );
-	
+    Player( QWidget * parent = 0, Qt::WFlags f = 0 );
+    
 public:
-	void loadFiles(QStringList);
-	void setTitle(QString);
-	
+    void loadFiles(QStringList);
+    void setTitle(QString);
+    
 private:
     QList<Phonon::MediaSource> sources;
     void setActions();
@@ -27,35 +27,40 @@ private:
     QString audioLabel;
     void adjustWindow();
     int screenx;
-	int screeny;
-	bool timeLeft;
-	QString path;
-	int index;
-	bool stopped;
-	int playing;
-	bool newLoad;
-	void init();
-	void init2();
-	void closeEvent(QCloseEvent *);
-	void setLabel();
-	void setAudio(QStringList);
-	Phonon::MediaSource getAudio();	
-	QString calculateTime(int);
+    int screeny;
+    bool timeLeft;
+    QString path;
+    int index;
+    bool stopped;
+    int playing;
+    bool newLoad;
+    void init();
+    void init2();
+    void closeEvent(QCloseEvent *);
+    void keyPressEvent(QKeyEvent *event);
+    void setLabel();
+    void setAudio(QStringList);
+    Phonon::MediaSource getAudio();    
+    QString calculateTime(int);
 
 private slots:
-	void finished();
-	void next();
-	void prev();
-	void load();
-	void play();
-	void stop();	
-	void autoPlay();
-	void updateTime();
-	void seekFile();
-	void stateChanged ( Phonon::State, Phonon::State );
-	void updateInfo();
-	void add();
-	void changeVolume();
+    void finished();
+    void next();
+    void prev();
+    void load();
+    void play();
+    void stop();    
+    void autoPlay();
+    void updateTime();
+    void seekFile();
+    void stateChanged ( Phonon::State, Phonon::State );
+    void updateInfo();
+    void add();
+    void changeVolume();
+    void setFullScreen();
+
+signals:
+    void fullScreen();
 };
 #endif
 

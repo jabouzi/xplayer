@@ -7,6 +7,7 @@ using namespace::std;
 int main(int argc, char ** argv)
 {
     QApplication app( argc, argv );
+    QApplication::setApplicationName("Star Runner");
     Player win;
     QStringList files;
     files << argv[1];

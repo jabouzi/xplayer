@@ -1,7 +1,6 @@
 TEMPLATE = app
 QT = gui core phonon
 CONFIG += qt warn_on console release
-DESTDIR = bin
 OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = build
