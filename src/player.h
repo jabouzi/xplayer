@@ -42,6 +42,7 @@ private:
     void setAudio(QStringList);
     Phonon::MediaSource getAudio();    
     QString calculateTime(int);
+    //VideoWidget *vwidget;
 
 private slots:
     void finished();
@@ -57,10 +58,12 @@ private slots:
     void updateInfo();
     void add();
     void changeVolume();
-    void setFullScreen();
+    void setFullScreen_();
+    void exitFullScreen_();
 
 signals:
-    void fullScreen();
+    void enterfullScreen();
+    void exitfullScreen();
 };
 #endif
 

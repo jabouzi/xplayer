@@ -16,6 +16,8 @@ Player::Player( QWidget * parent, Qt::WFlags f)
     setActions();
     init();
     adjustWindow();
+    //vwidget = new VideoWidget(this);
+    //Phonon::createPath(videoPlayer->mediaObject(), videoPlayer->videoWidget());
 }
 
 void Player::loadFiles(QStringList list)
@@ -154,7 +156,8 @@ void Player::setActions(){
     connect(videoPlayer->mediaObject(), SIGNAL(metaDataChanged()), this, SLOT(updateInfo()));
     connect(timeSlider, SIGNAL(sliderReleased()),this, SLOT(seekFile()));
     connect(volumeSlider, SIGNAL(valueChanged(int)),this, SLOT(changeVolume()));
-    connect(this, SIGNAL(fullScreen()), this, SLOT(setFullScreen()));
+    connect(this, SIGNAL(enterfullScreen()), this, SLOT(setFullScreen_()));
+    connect(this, SIGNAL(exitfullScreen()), this, SLOT(exitFullScreen_()));
 }
 
 // set the player UI : buttons icons and sliders
@@ -342,15 +345,24 @@ void Player::keyPressEvent(QKeyEvent *event)
 {
     QMainWindow::keyPressEvent(event);        
     switch (event->key()) {
-        case Qt::Key_F:    // 0 button pressed and so on....        
-            emit(fullScreen());
+        case Qt::Key_F:    // F button pressed and so on....        
+            emit(enterfullScreen());
             qDebug() << "F";
+            break;
+        case Qt::Key_E:    // F button pressed and so on....        
+            emit(exitfullScreen());
+            qDebug() << "E";
             break;
     }
 }
 
-void Player::setFullScreen()
+void Player::setFullScreen_()
 {
-    videoPlayer->setFullScreen(true);
+    videoPlayer->videoWidget()->setFullScreen(true);
+}
+
+void Player::exitFullScreen_()
+{
+    videoPlayer->videoWidget()->setFullScreen(false);
 }
 //
