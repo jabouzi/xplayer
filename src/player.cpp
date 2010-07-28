@@ -344,6 +344,7 @@ QString Player::calculateTime(int time_)
 
 void Player::keyPressEvent(QKeyEvent *event)
 {
+    qDebug() << event->key();
     QMainWindow::keyPressEvent(event);        
     switch (event->key()) {
         case Qt::Key_F:    // F button pressed and so on....        
