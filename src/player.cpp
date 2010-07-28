@@ -15,7 +15,7 @@ Player::Player( QWidget * parent, Qt::WFlags f)
     setUI();
     setActions();
     init();
-    //adjustWindow();
+    adjustWindow();
     videoPlayer->installEventFilter(this);
     videoPlayer->videoWidget()->installEventFilter(this);
     isFullScreen = false;
@@ -72,28 +72,37 @@ void Player::init2()
 // adjust window position to right down corner
 void Player::adjustWindow()
 {
-    QRect rec = frameGeometry();
-    qDebug() << "W : " << QString::number(rec.width()); 
-    qDebug() << "H : " << QString::number(rec.height());
-    QRect rec0 = geometry();
-    qDebug() << "W0 : " << QString::number(rec0.width()); 
-    qDebug() << "H0 : " << QString::number(rec0.height());
+    //~ QRect rec = frameGeometry();
+    //~ qDebug() << "W : " << QString::number(rec.width()); 
+    //~ qDebug() << "H : " << QString::number(rec.height());
+    //~ QRect rec0 = geometry();
+    //~ qDebug() << "W0 : " << QString::number(rec0.width()); 
+    //~ qDebug() << "H0 : " << QString::number(rec0.height());
+    //~ desktop = QApplication::desktop();
+    //~ QRect rec1 = desktop->availableGeometry (0);
+    //~ QRect rec2 = desktop->screenGeometry (0);
+    //~ QSize windowSize;     
+    //~ screenWidth = desktop->width(); 
+    //~ screenHeight = desktop->height();
+    //~ windowSize = size(); 
+    //~ width = windowSize.width(); 
+    //~ height = windowSize.height();   
+    //~ qDebug() << "W2 : " << QString::number(width); 
+    //~ qDebug() << "H2 : " << QString::number(height); 
+    //~ x = (screenWidth - width);
+    //~ y = (screenHeight - height);
+    //~ int diff1 = rec2.height() - rec1.height();
+    //~ int diff2 = rec2.width() - rec1.width();  
+    //~ move (x+diff2, y+diff1);
+    
     desktop = QApplication::desktop();
-    QRect rec1 = desktop->availableGeometry (1);
-    QRect rec2 = desktop->screenGeometry (1);
-    QSize windowSize;     
-    screenWidth = desktop->width(); 
-    screenHeight = desktop->height();
-    windowSize = size(); 
-    width = windowSize.width(); 
-    height = windowSize.height();   
-    qDebug() << "W2 : " << QString::number(width); 
-    qDebug() << "H2 : " << QString::number(height); 
-    x = (screenWidth - width);
-    y = (screenHeight - height);
-    int diff1 = rec2.height() - rec1.height();
-    int diff2 = rec2.width() - rec1.width();  
-    move (x+diff2, y+diff1);
+    QRect rec = frameGeometry();
+    width = rec.width(); 
+    height = rec.height();
+    QRect rec1 = desktop->screenGeometry (0);    
+    QRect rec2 = desktop->availableGeometry (0);    
+    x = rec2.width() - width, y = rec2.height() - height  + getTopPanel();    
+    setGeometry(x,y,width,height);
 }
 
 void Player::closeEvent(QCloseEvent *event)
@@ -467,5 +476,34 @@ void Player::unsetFullScreen()
     
     //~ videoPlayer->videoWidget()->setFullScreen(false);
     //~ show();
+}
+
+int Player::getTopPanel()
+{
+    int topPanel = 0;
+    #ifdef Q_WS_X11
+    char * pPath = getenv ("KDE_FULL_SESSION");
+    if (QString(pPath) == NULL)
+    {
+        QProcess gconf;
+        gconf.start("gconftool", QStringList() << "--get" <<  "/schemas/apps/panel/toplevels/size");   
+        
+        gconf.waitForStarted();         
+        gconf.closeWriteChannel();
+        gconf.waitForFinished();
+
+        QByteArray result = gconf.readAll();
+        
+        QString str = QString(result);
+        int j = 0;
+        j = str.indexOf("Default Value:", j);
+        
+        int k = 0;
+        k = str.indexOf("Owner:", k);         
+        
+        topPanel = str.section("", j, k).trimmed().section("",-3,-1).toInt();
+    }
+    #endif
+    return topPanel;
 }
 //

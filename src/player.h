@@ -37,6 +37,7 @@ private:
     bool newLoad;
     void init();
     void init2();
+    int getTopPanel();
     void closeEvent(QCloseEvent *);
     void keyPressEvent(QKeyEvent *event);
     void moveEvent(QMoveEvent *event);
