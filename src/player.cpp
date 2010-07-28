@@ -424,44 +424,38 @@ bool Player::eventFilter(QObject *o, QEvent *e)
 
 void Player::setFullScreen()
 {
-    //qDebug() << desktop->screenNumber(this);
-    //QRect rect = desktop->screenGeometry (desktop->screenNumber(this));
-    //videoPlayer->setGeometry(0,0,width,height);
-    hide();
-    videoPlayer->videoWidget()->setFullScreen(true);
-    //~ prevButton->hide();
-    //~ nextButton->hide();    
-    //~ addButton->hide();
-    //~ playButton->hide();
-    //~ volumeSlider->hide();
-    //~ timeLabel->hide();
-    //~ lengthLabel->hide();
-    //~ timeSlider->hide();
-    //~ //QRect rec = frameGeometry();
-    //rec.width()
-    //rec.height()
-    //~ //qDebug() << screenWidth << screenHeight;    
-    //~ //this->enableMask(true);
-    //~ this->showFullScreen();
-    //~ QRect rect = desktop->screenGeometry (desktop->screenNumber(this));    
-    //~ //this->showFullScreen();
-    //~ videoPlayer->setGeometry(0,0,rect.width(),rect.height());
+
+    //~ hide();
+    //~ videoPlayer->videoWidget()->setFullScreen(true);
+    
+    prevButton->hide();
+    nextButton->hide();    
+    addButton->hide();
+    playButton->hide();
+    volumeSlider->hide();
+    timeLabel->hide();
+    lengthLabel->hide();
+    timeSlider->hide();
+    
+    QRect rect = desktop->screenGeometry (desktop->screenNumber(this));    
+    this->showFullScreen();
+    videoPlayer->setGeometry(0,0,rect.width(),rect.height());
 }
 
 
 void Player::unsetFullScreen()
 {
-    //this->enableMask(true);
-    //~ prevButton->show();
-    //~ nextButton->show(); 
-    //~ addButton->show();
-    //~ playButton->show();
-    //~ volumeSlider->show();
-    //~ timeLabel->show();
-    //~ lengthLabel->show();
-    //~ timeSlider->show();
-    //~ this->showNormal();
-    videoPlayer->videoWidget()->setFullScreen(false);
-    show();
+    prevButton->show();
+    nextButton->show(); 
+    addButton->show();
+    playButton->show();
+    volumeSlider->show();
+    timeLabel->show();
+    lengthLabel->show();
+    timeSlider->show();
+    this->showNormal();
+    
+    //~ videoPlayer->videoWidget()->setFullScreen(false);
+    //~ show();
 }
 //
