@@ -348,11 +348,15 @@ void Player::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
         case Qt::Key_F:    // F button pressed and so on....        
             emit(enterfullScreen());            
-            qDebug() << "F";
+            break;
+        case Qt::Key_F11:    // F button pressed and so on....        
+            emit(enterfullScreen());            
             break;
         case Qt::Key_E:    // F button pressed and so on....        
             emit(exitfullScreen());
-            qDebug() << "E";
+            break;
+        case Qt::Key_Escape:    // Escape button pressed and so on....        
+            emit(exitfullScreen());
             break;
     }
 }
