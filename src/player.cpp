@@ -15,7 +15,10 @@ Player::Player( QWidget * parent, Qt::WFlags f)
     setUI();
     setActions();
     init();
-    adjustWindow();
+    //adjustWindow();
+    videoPlayer->installEventFilter(this);
+    videoPlayer->videoWidget()->installEventFilter(this);
+    isFullScreen = false;
     //vwidget = new VideoWidget(this);
     //Phonon::createPath(videoPlayer->mediaObject(), videoPlayer->videoWidget());
 }
@@ -75,12 +78,9 @@ void Player::adjustWindow()
     QRect rec0 = geometry();
     qDebug() << "W0 : " << QString::number(rec0.width()); 
     qDebug() << "H0 : " << QString::number(rec0.height());
-    QDesktopWidget *desktop = QApplication::desktop();
-    QRect rec1 = desktop->availableGeometry (0);
-    QRect rec2 = desktop->screenGeometry (0);
-    int screenWidth, width; 
-    int screenHeight, height;
-    int x, y;
+    desktop = QApplication::desktop();
+    QRect rec1 = desktop->availableGeometry (1);
+    QRect rec2 = desktop->screenGeometry (1);
     QSize windowSize;     
     screenWidth = desktop->width(); 
     screenHeight = desktop->height();
@@ -98,6 +98,7 @@ void Player::adjustWindow()
 
 void Player::closeEvent(QCloseEvent *event)
 {
+    qDebug() << event;
     close();
 }
 
@@ -156,8 +157,8 @@ void Player::setActions(){
     connect(videoPlayer->mediaObject(), SIGNAL(metaDataChanged()), this, SLOT(updateInfo()));
     connect(timeSlider, SIGNAL(sliderReleased()),this, SLOT(seekFile()));
     connect(volumeSlider, SIGNAL(valueChanged(int)),this, SLOT(changeVolume()));
-    connect(this, SIGNAL(enterfullScreen()), this, SLOT(setFullScreen_()));
-    connect(this, SIGNAL(exitfullScreen()), this, SLOT(exitFullScreen_()));
+    connect(this, SIGNAL(enterfullScreen()), this, SLOT(setFullScreen()));
+    connect(this, SIGNAL(exitfullScreen()), this, SLOT(unsetFullScreen()));
 }
 
 // set the player UI : buttons icons and sliders
@@ -346,7 +347,7 @@ void Player::keyPressEvent(QKeyEvent *event)
     QMainWindow::keyPressEvent(event);        
     switch (event->key()) {
         case Qt::Key_F:    // F button pressed and so on....        
-            emit(enterfullScreen());
+            emit(enterfullScreen());            
             qDebug() << "F";
             break;
         case Qt::Key_E:    // F button pressed and so on....        
@@ -356,13 +357,111 @@ void Player::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void Player::setFullScreen_()
+void Player::moveEvent(QMoveEvent *event)
 {
-    videoPlayer->videoWidget()->setFullScreen(true);
+    QMainWindow::moveEvent(event);   
+    qDebug() << "x1" << event->pos().x();
+    qDebug() << "y1" << event->pos().y();
+    //~ switch (event->key()) {
+        //~ case Qt::Key_F:    // F button pressed and so on....        
+            //~ emit(enterfullScreen());            
+            //~ qDebug() << "F";
+            //~ break;
+        //~ case Qt::Key_E:    // F button pressed and so on....        
+            //~ emit(exitfullScreen());
+            //~ qDebug() << "E";
+            //~ break;
+    //~ }
 }
 
-void Player::exitFullScreen_()
+void Player::mouseMoveEvent(QMouseEvent *event)
 {
+    QMainWindow::mouseMoveEvent(event);   
+    qDebug() << "x2" << event->pos().x();
+    qDebug() << "y2" << event->pos().y();
+}
+
+// detect click on the time label
+bool Player::eventFilter(QObject *o, QEvent *e)
+{
+    //qDebug() << QString::number(e->type());
+    if (e->type() == QEvent::MouseButtonDblClick)
+    {
+        
+        if (o == videoPlayer)
+        {
+            if (!isFullScreen)
+            {
+                setFullScreen();
+                isFullScreen = true;
+            }
+            else
+            {
+                unsetFullScreen();
+                isFullScreen = false;
+            }
+            return TRUE;
+        }    
+        
+        if (o == videoPlayer->videoWidget())
+        {
+            if (!isFullScreen)
+            {
+                setFullScreen();
+                isFullScreen = true;
+            }
+            else
+            {
+                unsetFullScreen();
+                isFullScreen = false;
+            }
+            return TRUE;
+        }           
+    }
+
+    return QWidget::eventFilter(o, e);
+}
+
+void Player::setFullScreen()
+{
+    //qDebug() << desktop->screenNumber(this);
+    //QRect rect = desktop->screenGeometry (desktop->screenNumber(this));
+    //videoPlayer->setGeometry(0,0,width,height);
+    hide();
+    videoPlayer->videoWidget()->setFullScreen(true);
+    //~ prevButton->hide();
+    //~ nextButton->hide();    
+    //~ addButton->hide();
+    //~ playButton->hide();
+    //~ volumeSlider->hide();
+    //~ timeLabel->hide();
+    //~ lengthLabel->hide();
+    //~ timeSlider->hide();
+    //~ //QRect rec = frameGeometry();
+    //rec.width()
+    //rec.height()
+    //~ //qDebug() << screenWidth << screenHeight;    
+    //~ //this->enableMask(true);
+    //~ this->showFullScreen();
+    //~ QRect rect = desktop->screenGeometry (desktop->screenNumber(this));    
+    //~ //this->showFullScreen();
+    //~ videoPlayer->setGeometry(0,0,rect.width(),rect.height());
+}
+
+
+void Player::unsetFullScreen()
+{
+    //this->enableMask(true);
+    //~ prevButton->show();
+    //~ nextButton->show(); 
+    //~ addButton->show();
+    //~ playButton->show();
+    //~ volumeSlider->show();
+    //~ timeLabel->show();
+    //~ lengthLabel->show();
+    //~ timeSlider->show();
+    //~ this->showNormal();
     videoPlayer->videoWidget()->setFullScreen(false);
+    show();
 }
 //

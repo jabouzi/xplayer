@@ -19,6 +19,7 @@ public:
     void setTitle(QString);
     
 private:
+    bool eventFilter(QObject *, QEvent *);
     QList<Phonon::MediaSource> sources;
     void setActions();
     void setUI();
@@ -38,10 +39,17 @@ private:
     void init2();
     void closeEvent(QCloseEvent *);
     void keyPressEvent(QKeyEvent *event);
+    void moveEvent(QMoveEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
     void setLabel();
     void setAudio(QStringList);
     Phonon::MediaSource getAudio();    
     QString calculateTime(int);
+    QDesktopWidget *desktop;
+    int screenWidth, width; 
+    int screenHeight, height;
+    int x, y;
+    bool isFullScreen;
     //VideoWidget *vwidget;
 
 private slots:
@@ -58,8 +66,8 @@ private slots:
     void updateInfo();
     void add();
     void changeVolume();
-    void setFullScreen_();
-    void exitFullScreen_();
+    void setFullScreen();
+    void unsetFullScreen();
 
 signals:
     void enterfullScreen();
