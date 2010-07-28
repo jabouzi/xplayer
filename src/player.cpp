@@ -436,10 +436,13 @@ void Player::setFullScreen()
     timeLabel->hide();
     lengthLabel->hide();
     timeSlider->hide();
+    menubar->hide();    
     
-    QRect rect = desktop->screenGeometry (desktop->screenNumber(this));    
-    this->showFullScreen();
+    desktop = QApplication::desktop();
+    QRect rect = desktop->screenGeometry (desktop->screenNumber(this));   
+    setGeometry(0,0,rect.width(),rect.height()); 
     videoPlayer->setGeometry(0,0,rect.width(),rect.height());
+    //this->showFullScreen();
 }
 
 
@@ -453,6 +456,8 @@ void Player::unsetFullScreen()
     timeLabel->show();
     lengthLabel->show();
     timeSlider->show();
+    menubar->show();
+    
     this->showNormal();
     
     //~ videoPlayer->videoWidget()->setFullScreen(false);
