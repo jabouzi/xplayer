@@ -14,6 +14,7 @@ Player::Player( QWidget * parent, Qt::WFlags f)
     videoPlayer->installEventFilter(this);
     videoPlayer->videoWidget()->installEventFilter(this);
     isFullScreen = false;
+    addButton->hide();
 }
 
 void Player::loadFiles(QStringList list)
