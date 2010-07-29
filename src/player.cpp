@@ -4,13 +4,8 @@ Player::Player( QWidget * parent, Qt::WFlags f)
     : QMainWindow(parent, f)
 {
     setupUi(this);
-#ifdef Q_WS_WIN
     path = QCoreApplication::applicationDirPath ();
-#else 
-    path = "/usr/share/qsalat/";
-#endif
     if (path.data()[path.size() - 1] != '/') path += "/";
-    setupUi(this);
     videoPlayer->mediaObject()->setTickInterval(1000);
     setUI();
     setActions();
@@ -19,16 +14,16 @@ Player::Player( QWidget * parent, Qt::WFlags f)
     videoPlayer->installEventFilter(this);
     videoPlayer->videoWidget()->installEventFilter(this);
     isFullScreen = false;
-    //vwidget = new VideoWidget(this);
-    //Phonon::createPath(videoPlayer->mediaObject(), videoPlayer->videoWidget());
 }
 
 void Player::loadFiles(QStringList list)
 {
     sources.clear();
-    if (list.size() > 0){
+    if (list.size() > 0)
+    {
         init();    
-        for (int i = 0; i < list.size(); i++){            
+        for (int i = 0; i < list.size(); i++)
+        {            
             Phonon::MediaSource source(list.at(i));
             sources.insert(i,source);            
         }    
@@ -59,8 +54,10 @@ void Player::init2()
     index = 0;
     playing = 0;
     playButton->setEnabled(true);   
-    if ( sources.size() > 1){
-        if (index == 0){
+    if ( sources.size() > 1)
+    {
+        if (index == 0)
+        {
             prevButton->setEnabled(false);
             nextButton->setEnabled(true);            
         } 
@@ -71,30 +68,7 @@ void Player::init2()
 
 // adjust window position to right down corner
 void Player::adjustWindow()
-{
-    //~ QRect rec = frameGeometry();
-    //~ qDebug() << "W : " << QString::number(rec.width()); 
-    //~ qDebug() << "H : " << QString::number(rec.height());
-    //~ QRect rec0 = geometry();
-    //~ qDebug() << "W0 : " << QString::number(rec0.width()); 
-    //~ qDebug() << "H0 : " << QString::number(rec0.height());
-    //~ desktop = QApplication::desktop();
-    //~ QRect rec1 = desktop->availableGeometry (0);
-    //~ QRect rec2 = desktop->screenGeometry (0);
-    //~ QSize windowSize;     
-    //~ screenWidth = desktop->width(); 
-    //~ screenHeight = desktop->height();
-    //~ windowSize = size(); 
-    //~ width = windowSize.width(); 
-    //~ height = windowSize.height();   
-    //~ qDebug() << "W2 : " << QString::number(width); 
-    //~ qDebug() << "H2 : " << QString::number(height); 
-    //~ x = (screenWidth - width);
-    //~ y = (screenHeight - height);
-    //~ int diff1 = rec2.height() - rec1.height();
-    //~ int diff2 = rec2.width() - rec1.width();  
-    //~ move (x+diff2, y+diff1);
-    
+{    
     desktop = QApplication::desktop();
     QRect rec = frameGeometry();
     width = rec.width(); 
@@ -235,11 +209,11 @@ void Player::finished(){
     if (index < sources.size() - 1)
     {
         next();
-       }
-       else
-       {
-           close();
-      }
+    }
+    else
+    {
+        close();
+    }
 }
 
 // forward
@@ -264,9 +238,11 @@ void Player::load()
 {    
     sources.clear();
     QStringList list = QFileDialog::getOpenFileNames(this,tr("Open one or more files"),".",tr("audios (*.mp3 *.wma *.ogg *.wave *.midi *.avi *.mpeg *.mpg *.wmv *.divx *.xvid *.mp4 *.flv *.ogv)"));
-    if (list.size() > 0){
+    if (list.size() > 0)
+    {
         init();    
-        for (int i = 0; i < list.size(); i++){            
+        for (int i = 0; i < list.size(); i++)
+        {            
             Phonon::MediaSource source(list.at(i));
             sources.insert(i,source);            
         }    
@@ -281,8 +257,10 @@ void Player::load()
 void Player::add()
 {
     QStringList list = QFileDialog::getOpenFileNames(this,tr("Open one or more files"),".",tr("audios (*.mp3 *.wma *.ogg *.wave *.midi *.avi *.mpeg *.mpg *.wmv *.divx *.xvid *.mp4 *.flv *.ogv)"));
-    if (list.size() > 0){        
-        for (int i = 0; i < list.size(); i++){            
+    if (list.size() > 0)
+    {        
+        for (int i = 0; i < list.size(); i++)
+        {            
             Phonon::MediaSource source(list.at(i));
             sources.append(source);            
         }    
@@ -304,25 +282,31 @@ void Player::changeVolume()
 // detect the phonon status
 void Player::stateChanged(Phonon::State newstate, Phonon::State oldstate)
 {
-    if (oldstate == Phonon::LoadingState){    
+    if (oldstate == Phonon::LoadingState)
+    {    
         playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
         playButton->setToolTip("Pause");
     }
-    if( newstate == Phonon::StoppedState || newstate == Phonon::PausedState){        
+    if( newstate == Phonon::StoppedState || newstate == Phonon::PausedState)
+    {        
         playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
         playButton->setToolTip("Play");
     }
-    else if (newstate == Phonon::PlayingState) {
+    else if (newstate == Phonon::PlayingState)
+    {
         playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause)); 
         playButton->setToolTip("Pause"); 
     }    
-    else if (newstate == Phonon::ErrorState) {    
-            //QMessageBox::warning(this, "Phonon Mediaplayer", videoPlayer->mediaObject()->errorString(), QMessageBox::Close);
-            if (videoPlayer->mediaObject()->errorType() == Phonon::FatalError) {
-                init2();
-            } else {
-                videoPlayer->mediaObject()->pause();
-            }
+    else if (newstate == Phonon::ErrorState)
+    {            
+        if (videoPlayer->mediaObject()->errorType() == Phonon::FatalError)
+        {
+            init2();
+        } 
+        else 
+        {
+            videoPlayer->mediaObject()->pause();
+        }
      }
 }
 
@@ -355,17 +339,18 @@ void Player::keyPressEvent(QKeyEvent *event)
 {
     qDebug() << event->key();
     QMainWindow::keyPressEvent(event);        
-    switch (event->key()) {
-        case Qt::Key_F:    // F button pressed and so on....        
+    switch (event->key()) 
+    {
+        case Qt::Key_F:    // F button pressed
             emit(enterfullScreen());            
             break;
-        case Qt::Key_F11:    // F button pressed and so on....        
+        case Qt::Key_F11:    // F11 button pressed
             emit(enterfullScreen());            
             break;
-        case Qt::Key_E:    // F button pressed and so on....        
+        case Qt::Key_E:    // E button pressed  
             emit(exitfullScreen());
             break;
-        case Qt::Key_Escape:    // Escape button pressed and so on....        
+        case Qt::Key_Escape:    // Escape button pressed   
             emit(exitfullScreen());
             break;
     }
@@ -376,16 +361,7 @@ void Player::moveEvent(QMoveEvent *event)
     QMainWindow::moveEvent(event);   
     qDebug() << "x1" << event->pos().x();
     qDebug() << "y1" << event->pos().y();
-    //~ switch (event->key()) {
-        //~ case Qt::Key_F:    // F button pressed and so on....        
-            //~ emit(enterfullScreen());            
-            //~ qDebug() << "F";
-            //~ break;
-        //~ case Qt::Key_E:    // F button pressed and so on....        
-            //~ emit(exitfullScreen());
-            //~ qDebug() << "E";
-            //~ break;
-    //~ }
+    
 }
 
 void Player::mouseMoveEvent(QMouseEvent *event)
@@ -417,20 +393,20 @@ bool Player::eventFilter(QObject *o, QEvent *e)
             return TRUE;
         }    
         
-        if (o == videoPlayer->videoWidget())
-        {
-            if (!isFullScreen)
-            {
-                setFullScreen();
-                isFullScreen = true;
-            }
-            else
-            {
-                unsetFullScreen();
-                isFullScreen = false;
-            }
-            return TRUE;
-        }           
+        //~ if (o == videoPlayer->videoWidget())
+        //~ {
+            //~ if (!isFullScreen)
+            //~ {
+                //~ setFullScreen();
+                //~ isFullScreen = true;
+            //~ }
+            //~ else
+            //~ {
+                //~ unsetFullScreen();
+                //~ isFullScreen = false;
+            //~ }
+            //~ return TRUE;
+        //~ }           
     }
 
     return QWidget::eventFilter(o, e);
@@ -482,8 +458,8 @@ int Player::getTopPanel()
 {
     int topPanel = 0;
     #ifdef Q_WS_X11
-    char * pPath = getenv ("KDE_FULL_SESSION");
-    if (QString(pPath) == NULL)
+    char * pPath = getenv ("KDE_FULL_SESSION"); // KDE or Gnome
+    if (QString(pPath) == NULL) // Gnome
     {
         QProcess gconf;
         gconf.start("gconftool", QStringList() << "--get" <<  "/schemas/apps/panel/toplevels/size");   
