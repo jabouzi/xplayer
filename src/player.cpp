@@ -337,7 +337,7 @@ QString Player::calculateTime(int time_)
 
 void Player::keyPressEvent(QKeyEvent *event)
 {
-    qDebug() << event->key();
+    //qDebug() << event->key();
     QMainWindow::keyPressEvent(event);        
     switch (event->key()) 
     {
@@ -391,22 +391,7 @@ bool Player::eventFilter(QObject *o, QEvent *e)
                 isFullScreen = false;
             }
             return TRUE;
-        }    
-        
-        //~ if (o == videoPlayer->videoWidget())
-        //~ {
-            //~ if (!isFullScreen)
-            //~ {
-                //~ setFullScreen();
-                //~ isFullScreen = true;
-            //~ }
-            //~ else
-            //~ {
-                //~ unsetFullScreen();
-                //~ isFullScreen = false;
-            //~ }
-            //~ return TRUE;
-        //~ }           
+        }             
     }
 
     return QWidget::eventFilter(o, e);
