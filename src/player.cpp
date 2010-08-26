@@ -72,12 +72,12 @@ void Player::adjustWindow()
 {    
     desktop = QApplication::desktop();
     QRect rec = frameGeometry();
-    width = rec.width(); 
+    width = 250;
     height = rec.height();
     QRect rec1 = desktop->screenGeometry (0);    
     QRect rec2 = desktop->availableGeometry (0);    
     x = rec2.width() - width, y = rec2.height() - height  + getTopPanel();    
-    setGeometry(x,y,width,height);
+    setGeometry(x,y,250,height);
 }
 
 void Player::closeEvent(QCloseEvent *event)
