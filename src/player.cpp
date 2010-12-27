@@ -14,7 +14,7 @@ Player::Player( QWidget * parent, Qt::WFlags f)
     videoPlayer->installEventFilter(this);
     videoPlayer->videoWidget()->installEventFilter(this);
     isFullScreen = false;
-    addButton->hide();
+    //addButton->hide();
 }
 
 void Player::loadFiles(QStringList list)
@@ -29,7 +29,7 @@ void Player::loadFiles(QStringList list)
             sources.insert(i,source);            
         }    
         playButton->setEnabled(true);    
-        addButton->setEnabled(true);
+        //addButton->setEnabled(true);
         videoPlayer->mediaObject()->setCurrentSource(getAudio());
         play();
     }
@@ -82,7 +82,7 @@ void Player::adjustWindow()
 
 void Player::closeEvent(QCloseEvent *event)
 {
-    qDebug() << event;
+    //qDebug() << event;
     close();
 }
 
@@ -133,7 +133,7 @@ void Player::setActions(){
     connect(playButton, SIGNAL(clicked()), this, SLOT(play()));
     connect(nextButton, SIGNAL(clicked()), this, SLOT(next()));
     connect(prevButton, SIGNAL(clicked()), this, SLOT(prev()));
-    connect(addButton, SIGNAL(clicked()), this, SLOT(load()));
+    //connect(addButton, SIGNAL(clicked()), this, SLOT(load()));
     connect(videoPlayer->mediaObject(), SIGNAL(finished()), this, SLOT(finished()));
     connect(videoPlayer->mediaObject(), SIGNAL(totalTimeChanged(qint64)), this, SLOT(updateTime()));
     connect(videoPlayer->mediaObject(), SIGNAL(tick(qint64)), this, SLOT(updateTime()));    
@@ -157,7 +157,7 @@ void Player::setUI(){
     prevButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
     nextButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
     playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-    addButton->setIcon(style()->standardIcon(QStyle::SP_DialogOpenButton));
+    //addButton->setIcon(style()->standardIcon(QStyle::SP_DialogOpenButton));
 }
 
 // play audio file
@@ -248,7 +248,7 @@ void Player::load()
             sources.insert(i,source);            
         }    
         playButton->setEnabled(true);    
-        addButton->setEnabled(true);
+        //addButton->setEnabled(true);
         videoPlayer->mediaObject()->setCurrentSource(getAudio());
         play();
     }
@@ -360,16 +360,16 @@ void Player::keyPressEvent(QKeyEvent *event)
 void Player::moveEvent(QMoveEvent *event)
 {
     QMainWindow::moveEvent(event);   
-    qDebug() << "x1" << event->pos().x();
-    qDebug() << "y1" << event->pos().y();
+    //qDebug() << "x1" << event->pos().x();
+    //qDebug() << "y1" << event->pos().y();
     
 }
 
 void Player::mouseMoveEvent(QMouseEvent *event)
 {
     QMainWindow::mouseMoveEvent(event);   
-    qDebug() << "x2" << event->pos().x();
-    qDebug() << "y2" << event->pos().y();
+    //qDebug() << "x2" << event->pos().x();
+    //qDebug() << "y2" << event->pos().y();
 }
 
 // detect click on the time label
@@ -406,7 +406,7 @@ void Player::setFullScreen()
     
     prevButton->hide();
     nextButton->hide();    
-    addButton->hide();
+    //addButton->hide();
     playButton->hide();
     volumeSlider->hide();
     timeLabel->hide();
@@ -426,7 +426,7 @@ void Player::unsetFullScreen()
 {
     prevButton->show();
     nextButton->show(); 
-    addButton->show();
+    //addButton->show();
     playButton->show();
     volumeSlider->show();
     timeLabel->show();

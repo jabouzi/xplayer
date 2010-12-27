@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0" colspan="8">
+    <item row="0" column="0" colspan="7">
      <widget class="Phonon::VideoPlayer" name="videoPlayer"/>
     </item>
     <item row="1" column="0" colspan="2">
@@ -25,14 +25,14 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="2" colspan="5">
+    <item row="1" column="2" colspan="4">
      <widget class="QSlider" name="timeSlider">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
     </item>
-    <item row="1" column="7">
+    <item row="1" column="6">
      <widget class="QLabel" name="lengthLabel">
       <property name="text">
        <string>00:00:00</string>
@@ -61,13 +61,6 @@
      </widget>
     </item>
     <item row="2" column="4">
-     <widget class="QPushButton" name="addButton">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="5">
      <spacer name="horizontalSpacer">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -80,7 +73,7 @@
       </property>
      </spacer>
     </item>
-    <item row="2" column="6" colspan="2">
+    <item row="2" column="5" colspan="2">
      <widget class="QSlider" name="volumeSlider">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
