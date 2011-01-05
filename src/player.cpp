@@ -46,7 +46,6 @@ void Player::init()
     db->setDatabaseName(path+"data/qsalat.db");
     db->setDatabase();
     initVolume();
-    qDebug() << volume << videoPlayer->volume();
     index = 0;
     playing = 0;
     playButton->setEnabled(false);    
@@ -77,9 +76,6 @@ void Player::initVolume()
     db->setTable("player");
     volume = db->select("volume").toDouble();  
     videoPlayer->setVolume(volume);
-    //pLog->Write(QString::number(latitude)); 
-    //pLog->Write(QString::number(longitude)); 
-    //pLog->Write(QString::number(timezone)); 
 }
 
 // adjust window position to right down corner
@@ -97,7 +93,6 @@ void Player::adjustWindow()
 
 void Player::closeEvent(QCloseEvent *event)
 {
-    //qDebug() << event;
     close();
 }
 
@@ -148,7 +143,6 @@ void Player::setActions(){
     connect(playButton, SIGNAL(clicked()), this, SLOT(play()));
     connect(nextButton, SIGNAL(clicked()), this, SLOT(next()));
     connect(prevButton, SIGNAL(clicked()), this, SLOT(prev()));
-    //connect(addButton, SIGNAL(clicked()), this, SLOT(load()));
     connect(videoPlayer->mediaObject(), SIGNAL(finished()), this, SLOT(finished()));
     connect(videoPlayer->mediaObject(), SIGNAL(totalTimeChanged(qint64)), this, SLOT(updateTime()));
     connect(videoPlayer->mediaObject(), SIGNAL(tick(qint64)), this, SLOT(updateTime()));    
@@ -173,7 +167,6 @@ void Player::setUI(){
     prevButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
     nextButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
     playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-    //addButton->setIcon(style()->standardIcon(QStyle::SP_DialogOpenButton));
 }
 
 // play audio file
