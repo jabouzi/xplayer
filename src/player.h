@@ -6,6 +6,7 @@
 #include <QDialog>
 #include <QString>
 #include <phonon>
+#include "database.h"
 #include "ui_player.h"
 //
 class Player : public QMainWindow, public Ui::Player
@@ -44,6 +45,7 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     void setLabel();
     void setAudio(QStringList);
+    void initVolume();
     Phonon::MediaSource getAudio();    
     QString calculateTime(int);
     QDesktopWidget *desktop;
@@ -51,7 +53,8 @@ private:
     int screenHeight, height;
     int x, y;
     bool isFullScreen;
-    //VideoWidget *vwidget;
+    Database *db;
+    float volume;
 
 private slots:
     void finished();
@@ -69,6 +72,7 @@ private slots:
     void changeVolume();
     void setFullScreen();
     void unsetFullScreen();
+    void saveVolume();
 
 signals:
     void enterfullScreen();

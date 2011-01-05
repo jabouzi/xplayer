@@ -42,12 +42,17 @@ void Player::setTitle(QString title)
 
 void Player::init()
 {
+    db = Database::getInstance();
+    db->setDatabaseName(path+"data/qsalat.db");
+    db->setDatabase();
+    initVolume();
+    qDebug() << volume << videoPlayer->volume();
     index = 0;
     playing = 0;
     playButton->setEnabled(false);    
     nextButton->setEnabled(false);
     prevButton->setEnabled(false);
-    newLoad = true;
+    newLoad = true;   
 }
 
 void Player::init2()
@@ -65,6 +70,16 @@ void Player::init2()
     }
     videoPlayer->mediaObject()->setCurrentSource(sources.at(0)); 
     play();
+}
+
+void Player::initVolume()
+{ 
+    db->setTable("player");
+    volume = db->select("volume").toDouble();  
+    videoPlayer->setVolume(volume);
+    //pLog->Write(QString::number(latitude)); 
+    //pLog->Write(QString::number(longitude)); 
+    //pLog->Write(QString::number(timezone)); 
 }
 
 // adjust window position to right down corner
@@ -140,6 +155,7 @@ void Player::setActions(){
     connect(videoPlayer->mediaObject(), SIGNAL(stateChanged(Phonon::State, Phonon::State)), this, SLOT(stateChanged(Phonon::State, Phonon::State)));
     connect(videoPlayer->mediaObject(), SIGNAL(metaDataChanged()), this, SLOT(updateInfo()));
     connect(timeSlider, SIGNAL(sliderReleased()),this, SLOT(seekFile()));
+    connect(volumeSlider, SIGNAL(sliderReleased()),this, SLOT(saveVolume()));
     connect(volumeSlider, SIGNAL(valueChanged(int)),this, SLOT(changeVolume()));
     connect(this, SIGNAL(enterfullScreen()), this, SLOT(setFullScreen()));
     connect(this, SIGNAL(exitfullScreen()), this, SLOT(unsetFullScreen()));
@@ -276,8 +292,14 @@ void Player::seekFile()
 
 void Player::changeVolume()
 {
-    float volume = float(volumeSlider->value())/100.0;
+    volume = float(volumeSlider->value())/100.0;
     videoPlayer->setVolume(volume);
+}
+
+void Player::saveVolume()
+{
+    db->setTable("player");
+    db->update("volume",QString::number(volume));
 }
 
 // detect the phonon status
