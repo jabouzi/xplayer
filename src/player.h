@@ -62,7 +62,7 @@ private slots:
     void prev();
     void load();
     void play();
-    void stop();    
+    void stop();
     void autoPlay();
     void updateTime();
     void seekFile();

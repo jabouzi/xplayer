@@ -17,6 +17,7 @@ Player::Player( QWidget * parent, Qt::WFlags f)
     //addButton->hide();
 }
 
+
 void Player::loadFiles(QStringList list)
 {
     sources.clear();
@@ -71,10 +72,11 @@ void Player::init2()
     play();
 }
 
+
 void Player::initVolume()
 { 
     db->setTable("player");
-    volume = db->select("volume").toDouble();  
+    volume = db->select("volume").toDouble();
     videoPlayer->setVolume(volume);
 }
 
@@ -484,3 +486,4 @@ int Player::getTopPanel()
     return topPanel;
 }
 //
+
